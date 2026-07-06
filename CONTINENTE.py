@@ -3,6 +3,8 @@ from selenium.webdriver.common.keys import Keys
 
 from common.base_page import BasePage
 from helpers import human_pause
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class ContinenteHomePage(BasePage):
@@ -15,13 +17,18 @@ class ContinenteHomePage(BasePage):
 
     SEARCH_INPUT = (By.CSS_SELECTOR, 'input[type="search"], input#search, input[name="q"]')
     COOKIE_ACCEPT_BUTTON = (
-        By.XPATH,
-        '//button[contains(., "Aceitar") or contains(., "Aceito") or contains(., "Concordo")]',
-    )
+        By.CSS_SELECTOR,
+        "#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll, "
+        "#CybotCookiebotDialogBodyButtonAccept, "
+        "#CybotCookiebotDialogBodyLevelButtonAccept"
+)
 
     def reject_cookies_if_present(self):
         try:
-            self.find_clickable(self.COOKIE_ACCEPT_BUTTON).click()
+            button = WebDriverWait(self.driver, 5).until(
+                EC.element_to_be_clickable(self.COOKIE_ACCEPT_BUTTON)
+            )
+            button.click()
             human_pause()
         except Exception:
             pass
