@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+screenshots/
+report.xml
+.env
+venv/
+.venv/
+.idea/
