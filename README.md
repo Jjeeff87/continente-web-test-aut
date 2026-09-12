@@ -1,72 +1,73 @@
-# Continente — Automação de testes (busca de produtos continente.pt)
+# Continente: Test Automation (continente.pt product search)
 
-Testes automatizados em Python/Selenium para o fluxo de **busca de produtos** do
-site [continente.pt](https://www.continente.pt/), seguindo a mesma linha dos
-outros projetos (IKEA-WEB_TEST_AUT, Trotiurban, Shein), com algumas atualizações.
+Same idea as the other projects in my list (IKEA-WEB_TEST_AUT, Trotiurban,
+Shein), now applied to the **product search** flow on the
+[continente.pt](https://www.continente.pt/) site, already with a few
+improvements I've been carrying over from one project to the next.
 
-## Estrutura
+## Structure
 
-| Arquivo/Pasta            | Papel                                                                          |
-| ------------------------- | ------------------------------------------------------------------------------- |
-| `data.py`                 | URL do site e termos de busca, lidos do `.env` com fallback                     |
-| `helpers.py`              | Utilitários: checar site no ar, digitação/pausas "humanizadas", leitura de `.env` |
-| `common/base_page.py`     | `BasePage` com operações comuns (find, click, digitar humanizado)               |
-| `CONTINENTE.py`           | Page Objects: `ContinenteHomePage`, `ContinenteSearchResultsPage`, `ContinenteProductPage` |
-| `conftest.py`             | Fixture do driver (Chrome) + screenshot automático em falha                    |
-| `TestersiteContinente.py` | Testes pytest                                                                    |
-| `.github/workflows/`      | CI: roda os testes a cada push/PR                                               |
+| File/Folder               | Role                                                                             |
+| -------------------------- | --------------------------------------------------------------------------------- |
+| `data.py`                  | Site URL and search terms, read from `.env` with a fallback                       |
+| `helpers.py`               | Utilities: checking if the site is up, "humanized" typing/pauses, reading `.env`   |
+| `common/base_page.py`      | `BasePage` with common operations (find, click, humanized typing)                 |
+| `CONTINENTE.py`            | Page Objects: `ContinenteHomePage`, `ContinenteSearchResultsPage`, `ContinenteProductPage` |
+| `conftest.py`              | Driver fixture (Chrome) + automatic screenshot on failure                         |
+| `TestersiteContinente.py`  | pytest tests                                                                       |
+| `.github/workflows/`       | CI: runs the tests on every push/PR                                               |
 
-## Novidades em relação ao padrão anterior (IKEA)
+## What's new compared to the previous baseline (IKEA)
 
-- Driver via **Selenium Manager** — sem precisar baixar/configurar chromedriver manualmente.
-- Fixture `chrome_driver` em `conftest.py` no lugar de `setup_class`/`teardown_class`.
-- Config por `.env` (`python-dotenv`) em vez de valores fixos no `data.py`.
-- `BasePage` comum, reaproveitável entre projetos (Shein, Continente, IKEA...).
-- Screenshot automático quando um teste falha (salvo em `screenshots/`).
-- Workflow de CI (GitHub Actions) rodando a suíte a cada push/PR.
+- Driver via **Selenium Manager**, no need to manually download/configure chromedriver.
+- `chrome_driver` fixture in `conftest.py` instead of `setup_class`/`teardown_class`.
+- Config via `.env` (`python-dotenv`) instead of hardcoded values in `data.py`.
+- Shared `BasePage`, reusable across projects (Shein, Continente, IKEA...).
+- Automatic screenshot when a test fails (saved to `screenshots/`).
+- CI workflow (GitHub Actions) running the suite on every push/PR.
 
-## Sobre a digitação "humanizada"
+## About the "humanized" typing
 
-Em vez de preencher o campo de busca instantaneamente, `helpers.human_type` digita
-caractere por caractere com pequenas pausas aleatórias, e `helpers.human_pause` insere
-pausas curtas entre ações — deixando a automação com um ritmo mais parecido com o de
-uma pessoa real interagindo com o site.
+Instead of filling the search field instantly, `helpers.human_type` types
+character by character with small random pauses, and `helpers.human_pause` adds
+short pauses between actions, giving the automation a rhythm that's closer to
+a real person interacting with the site.
 
-## Casos de teste
+## Test cases
 
-- Busca por um termo válido ("arroz") retorna resultados.
-- Busca por um termo inexistente mostra mensagem de "sem resultados".
-- Abrir o primeiro produto da lista exibe título e preço.
-- Adicionar o primeiro produto ao carrinho.
+- Searching for a valid term ("arroz") returns results.
+- Searching for a nonexistent term shows a "no results" message.
+- Opening the first product in the list shows a title and price.
+- Adding the first product to the cart.
 
-## Instalação
+## Installation
 
 ```bash
 pip install -r requirements.txt
-cp .env.example .env   # ajuste CONTINENTE_URL / SEARCH_TERM se necessário
+cp .env.example .env   # adjust CONTINENTE_URL / SEARCH_TERM if needed
 ```
 
-Requer o Chrome instalado localmente (o Selenium Manager cuida do driver automaticamente).
+Requires Chrome installed locally (Selenium Manager handles the driver automatically).
 
-## Rodando os testes
+## Running the tests
 
 ```bash
 pytest -v
 ```
 
-## Aviso importante
+## Important note
 
-Os locators em `CONTINENTE.py` são um ponto de partida (marcados com `TODO`) — não deu
-pra inspecionar o DOM real via fetch simples ao montar este projeto, e o site pode pedir
-loja/morada antes de liberar a busca. **Confirme/ajuste os seletores no site ao vivo
-antes de rodar de verdade.**
+The locators in `CONTINENTE.py` are a starting point (marked with `TODO`). I
+couldn't inspect the real DOM via a simple fetch while putting this project
+together, and the site may ask for a store/address before allowing search.
+**Confirm/adjust the selectors on the live site before running this for real.**
 
-## Publicando no GitHub
+## Publishing to GitHub
 
 ```bash
 git init
 git add .
-git commit -m "Automação de testes de busca de produtos - continente.pt"
-git remote add origin <URL_DO_SEU_REPOSITORIO_GITHUB>
+git commit -m "Product search test automation - continente.pt"
+git remote add origin <YOUR_GITHUB_REPO_URL>
 git push -u origin main
 ```

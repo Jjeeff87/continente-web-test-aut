@@ -21,13 +21,13 @@ Uses Selenium Manager (built into Selenium 4.6+), so no manual chromedriver setu
 
 Page Object Model, same shape as the other projects in this line (IKEA-WEB_TEST_AUT, Trotiurban, Shein):
 
-- `data.py` — site URL and search terms, read from `.env` via `helpers.get_env` with sane defaults.
-- `helpers.py` — `is_url_reachable` (pre-flight check), `human_type`/`human_pause` (see below), `get_env`.
-- `common/base_page.py` — shared `BasePage` (find/find_clickable/click/type_human), same base class as the Shein project.
-- `CONTINENTE.py` — Page Objects: `ContinenteHomePage`, `ContinenteSearchResultsPage`, `ContinenteProductPage`, all extending `BasePage`.
-- `conftest.py` — `chrome_driver` fixture (class-scoped, injects `self.driver`) replacing the old `setup_class`/`teardown_class` pattern, plus a `pytest_runtest_makereport` hook that saves a screenshot to `screenshots/` on any test failure.
-- `TestersiteContinente.py` — pytest test class `TestContinenteSearch`; each test navigates fresh from the home page (`setup_method`) and flows through the page objects.
-- `.github/workflows/tests.yml` — runs the suite on push/PR via GitHub Actions.
+- `data.py`: site URL and search terms, read from `.env` via `helpers.get_env` with sane defaults.
+- `helpers.py`: `is_url_reachable` (pre-flight check), `human_type`/`human_pause` (see below), `get_env`.
+- `common/base_page.py`: shared `BasePage` (find/find_clickable/click/type_human), same base class as the Shein project.
+- `CONTINENTE.py`: Page Objects `ContinenteHomePage`, `ContinenteSearchResultsPage`, `ContinenteProductPage`, all extending `BasePage`.
+- `conftest.py`: `chrome_driver` fixture (class-scoped, injects `self.driver`) replacing the old `setup_class`/`teardown_class` pattern, plus a `pytest_runtest_makereport` hook that saves a screenshot to `screenshots/` on any test failure.
+- `TestersiteContinente.py`: pytest test class `TestContinenteSearch`; each test navigates fresh from the home page (`setup_method`) and flows through the page objects.
+- `.github/workflows/tests.yml`: runs the suite on push/PR via GitHub Actions.
 
 ### Humanized typing
 
@@ -35,4 +35,4 @@ Same as the other projects: `helpers.human_type` types character-by-character wi
 
 ### Known caveat
 
-Locators in `CONTINENTE.py` are best-effort placeholders (marked with TODO) — the site's DOM couldn't be inspected live while scaffolding this project. Verify/adjust selectors against the live site (or via browser devtools) before relying on these tests. Also watch for a store/address selection gate that may appear before the search bar is usable.
+Locators in `CONTINENTE.py` are best-effort placeholders (marked with TODO). The site's DOM couldn't be inspected live while scaffolding this project. Verify/adjust selectors against the live site (or via browser devtools) before relying on these tests. Also watch for a store/address selection gate that may appear before the search bar is usable.

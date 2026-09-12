@@ -8,11 +8,11 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 class ContinenteHomePage(BasePage):
-    """Page Object da página inicial do continente.pt (barra de busca).
+    """Page Object for the continente.pt home page (search bar).
 
-    TODO: confirmar os seletores reais no site (validar manualmente antes de
-    rodar em CI; o site usa banner de cookies e pode pedir loja/morada antes
-    de mostrar a busca).
+    TODO: confirm the real selectors on the site (validate manually before
+    running in CI; the site uses a cookie banner and may ask for a store/
+    address before showing the search).
     """
 
     SEARCH_INPUT = (By.CSS_SELECTOR, 'input[type="search"], input#search, input[name="q"]')
@@ -20,8 +20,8 @@ class ContinenteHomePage(BasePage):
         By.CSS_SELECTOR,
         "#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll, "
         "#CybotCookiebotDialogBodyButtonAccept, "
-        "#CybotCookiebotDialogBodyLevelButtonAccept"
-)
+        "#CybotCookiebotDialogBodyLevelButtonAccept",
+    )
 
     def reject_cookies_if_present(self):
         try:
@@ -34,18 +34,27 @@ class ContinenteHomePage(BasePage):
             pass
 
     def search_for(self, term):
-        """Digita o termo de forma humanizada e confirma com Enter."""
+        """Types the term in a humanized way and confirms with Enter."""
         self.type_human(self.SEARCH_INPUT, term)
         self.find(self.SEARCH_INPUT).send_keys(Keys.RETURN)
         human_pause()
 
 
 class ContinenteSearchResultsPage(BasePage):
-    """Page Object da página de resultados de busca."""
+    """Page Object for the search results page."""
 
-    RESULTS_COUNT_TEXT = (By.XPATH, '//*[contains(text(), "resultados") or contains(text(), "produtos")]')
-    NO_RESULTS_TEXT = (By.XPATH, '//*[contains(text(), "Sem resultados") or contains(text(), "não encontr")]')
-    FIRST_PRODUCT_LINK = (By.XPATH, '(//a[contains(@href, "/produto/") or contains(@class, "product")])[1]')
+    RESULTS_COUNT_TEXT = (
+        By.XPATH,
+        '//*[contains(text(), "resultados") or contains(text(), "produtos")]',
+    )
+    NO_RESULTS_TEXT = (
+        By.XPATH,
+        '//*[contains(text(), "Sem resultados") or contains(text(), "não encontr")]',
+    )
+    FIRST_PRODUCT_LINK = (
+        By.XPATH,
+        '(//a[contains(@href, "/produto/") or contains(@class, "product")])[1]',
+    )
     FIRST_PRODUCT_ADD_TO_CART_BUTTON = (
         By.XPATH,
         '(//button[contains(., "Adicionar") or contains(@class, "add-to-cart")])[1]',
@@ -65,17 +74,21 @@ class ContinenteSearchResultsPage(BasePage):
         return self.find(self.FIRST_PRODUCT_LINK).text
 
     def add_first_product_to_cart(self):
-        """Adiciona o primeiro produto ao carrinho direto da listagem (sem abrir a página do produto)."""
+        """Adds the first product to the cart directly from the listing, without opening
+        its page."""
         self.find_clickable(self.FIRST_PRODUCT_ADD_TO_CART_BUTTON).click()
         human_pause()
 
 
 class ContinenteProductPage(BasePage):
-    """Page Object da página de detalhe de um produto."""
+    """Page Object for a product detail page."""
 
-    PRODUCT_TITLE = (By.CSS_SELECTOR, 'h1')
+    PRODUCT_TITLE = (By.CSS_SELECTOR, "h1")
     PRICE = (By.XPATH, '//*[contains(text(), "€")]')
-    ADD_TO_CART_BUTTON = (By.XPATH, '(//button[contains(., "Adicionar") or contains(@class, "add-to-cart")])[1]')
+    ADD_TO_CART_BUTTON = (
+        By.XPATH,
+        '(//button[contains(., "Adicionar") or contains(@class, "add-to-cart")])[1]',
+    )
 
     def get_title(self):
         return self.find(self.PRODUCT_TITLE).text

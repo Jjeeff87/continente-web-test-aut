@@ -4,7 +4,7 @@ from CONTINENTE import ContinenteHomePage, ContinenteProductPage, ContinenteSear
 
 
 class TestContinenteSearch:
-    """Testes automatizados da busca de produtos em continente.pt."""
+    """Automated tests for the product search on continente.pt."""
 
     def setup_method(self):
         if not helpers.is_url_reachable(data.CONTINENTE_URL):
@@ -48,6 +48,6 @@ class TestContinenteSearch:
         product_page = ContinenteProductPage(self.driver)
         product_page.add_to_cart()
 
-        # Verificação simples; ajustar depois de confirmar o comportamento
-        # exato do carrinho (ex.: contador no header, mini-cart, etc.).
+        # Simple check for now; adjust once the exact cart behavior is confirmed
+        # (e.g. header counter, mini-cart, etc.).
         helpers.human_pause()
